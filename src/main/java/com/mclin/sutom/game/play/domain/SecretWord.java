@@ -7,7 +7,7 @@ public record SecretWord(String secretWord) {
     return secretWord.charAt(0);
   }
 
-  public Stream<String> stream() {
-    return Stream.of(secretWord.split(""));
+  public Stream<Character> stream() {
+    return secretWord.chars().mapToObj(i -> (char) i);
   }
 }

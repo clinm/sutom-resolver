@@ -1,7 +1,7 @@
 package com.mclin.sutom.game.play.domain;
 
+import com.mclin.sutom.game.play.domain.Attempt.AttemptBuilder;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Game {
 
@@ -13,15 +13,23 @@ public class Game {
 
   public Hint hint() {
     Letter firstLetter = new Letter(secretWord.firstLetter());
-    var letters = new ArrayList<>();
+    var letters = new ArrayList<Letter>();
     letters.add(firstLetter);
 
     secretWord
       .stream()
       .skip(1)
-      .map(l -> Letter.UNKNOWN)
+      .map(l -> Letter.DOT_UNKNOWN)
       .forEach(letters::add);
 
-    return new Hint(Arrays.asList(firstLetter, Letter.UNKNOWN));
+    return new Hint(letters);
+  }
+
+  public Attempt guess(Guess guess) {
+    var builder = new AttemptBuilder();
+
+    guess.stream().forEach(builder::withWellPlaced);
+
+    return builder.build();
   }
 }
