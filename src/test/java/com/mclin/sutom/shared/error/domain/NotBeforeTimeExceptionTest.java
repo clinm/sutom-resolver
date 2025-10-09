@@ -2,9 +2,9 @@ package com.mclin.sutom.shared.error.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.mclin.sutom.UnitTest;
 import java.time.Instant;
 import org.junit.jupiter.api.Test;
-import com.mclin.sutom.UnitTest;
 
 @UnitTest
 class NotBeforeTimeExceptionTest {

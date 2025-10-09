@@ -24,7 +24,6 @@ npm install
 
 ## Local environment
 
-
 <!-- seed4j-needle-localEnvironment -->
 
 ## Start up
@@ -32,7 +31,6 @@ npm install
 ```bash
 ./mvnw
 ```
-
 
 <!-- seed4j-needle-startupCommand -->
 

@@ -2,8 +2,8 @@ package com.mclin.sutom.shared.error.domain;
 
 import static org.assertj.core.api.Assertions.*;
 
-import org.junit.jupiter.api.Test;
 import com.mclin.sutom.UnitTest;
+import org.junit.jupiter.api.Test;
 
 @UnitTest
 class StringTooLongExceptionTest {

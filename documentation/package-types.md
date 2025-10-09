@@ -10,7 +10,6 @@ To mark a package, you have to add a `package-info.java` file at the package roo
 ```java
 @com.mclin.sutom.SharedKernel
 package com.mclin.sutom;
-
 ```
 
 or:
@@ -18,5 +17,4 @@ or:
 ```java
 @com.mclin.sutom.BusinessContext
 package com.mclin.sutom;
-
 ```

@@ -2,6 +2,7 @@ package com.mclin.sutom.shared.collection.domain;
 
 import static org.assertj.core.api.Assertions.*;
 
+import com.mclin.sutom.UnitTest;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -12,7 +13,6 @@ import java.util.Set;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import com.mclin.sutom.UnitTest;
 
 @UnitTest
 class SutomResolverCollectionsTest {
