@@ -28,7 +28,13 @@ public class Game {
   public Attempt guess(Guess guess) {
     var builder = new AttemptBuilder();
 
-    guess.stream().forEach(builder::withWellPlaced);
+    for (int i = 0; i < guess.value().length(); i++) {
+      if (secretWord.hasCharacterAtPos(guess.at(i), i)) {
+        builder.withWellPlaced(guess.at(i));
+      } else {
+        builder.withUnknown(guess.at(i));
+      }
+    }
 
     return builder.build();
   }

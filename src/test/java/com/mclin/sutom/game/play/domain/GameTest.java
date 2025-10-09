@@ -25,6 +25,14 @@ class GameTest {
     assertThat(g.guess(new Guess("HI"))).isEqualTo(expected);
   }
 
+  @Test
+  void guessUnknownLetter() {
+    Game g = game();
+
+    Attempt expected = new AttemptBuilder().withWellPlaced('H').withUnknown('A').build();
+    assertThat(g.guess(new Guess("HA"))).isEqualTo(expected);
+  }
+
   private Game game() {
     return new Game(new SecretWord("HI"));
   }

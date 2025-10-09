@@ -10,4 +10,8 @@ public record SecretWord(String secretWord) {
   public Stream<Character> stream() {
     return secretWord.chars().mapToObj(i -> (char) i);
   }
+
+  public boolean hasCharacterAtPos(Character character, int i) {
+    return character.equals(secretWord.charAt(i));
+  }
 }
