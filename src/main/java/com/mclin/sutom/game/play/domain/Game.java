@@ -29,10 +29,13 @@ public class Game {
     var builder = new AttemptBuilder();
 
     for (int i = 0; i < guess.value().length(); i++) {
-      if (secretWord.hasCharacterAtPos(guess.at(i), i)) {
-        builder.withWellPlaced(guess.at(i));
+      Character current = guess.at(i);
+      if (secretWord.hasCharacterAtPos(current, i)) {
+        builder.withWellPlaced(current);
+      } else if (secretWord.contains(current)) {
+        builder.withMisPlaced(current);
       } else {
-        builder.withUnknown(guess.at(i));
+        builder.withUnknown(current);
       }
     }
 

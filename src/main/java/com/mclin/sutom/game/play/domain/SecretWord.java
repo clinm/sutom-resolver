@@ -14,4 +14,8 @@ public record SecretWord(String secretWord) {
   public boolean hasCharacterAtPos(Character character, int i) {
     return character.equals(secretWord.charAt(i));
   }
+
+  public boolean contains(Character at) {
+    return secretWord.contains(at.toString());
+  }
 }
