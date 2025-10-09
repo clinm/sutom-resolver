@@ -1,0 +1,12 @@
+{
+  "module" : "github-actions-maven",
+  "date" : "2025-10-05T16:02:25.329203900Z",
+  "properties" : {
+    "projectName" : "SUTOM Resolver for fun",
+    "baseName" : "sutomResolver",
+    "packageName" : "com.mclin.sutom",
+    "nodePackageManager" : "npm",
+    "endOfLine" : "lf",
+    "indentSize" : 2
+  }
+}
