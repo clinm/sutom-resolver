@@ -28,12 +28,15 @@ public class Game {
   public Attempt guess(Guess guess) {
     var builder = new AttemptBuilder();
 
+    LetterStats stats = secretWord.misplacedLettersStats(guess);
+
     for (int i = 0; i < guess.value().length(); i++) {
       Character current = guess.at(i);
       if (secretWord.hasCharacterAtPos(current, i)) {
         builder.withWellPlaced(current);
-      } else if (secretWord.contains(current)) {
+      } else if (stats.containsKey(current)) {
         builder.withMisPlaced(current);
+        stats.decrease(current);
       } else {
         builder.withUnknown(current);
       }

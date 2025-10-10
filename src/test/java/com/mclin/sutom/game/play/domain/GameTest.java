@@ -6,44 +6,68 @@ import com.mclin.sutom.UnitTest;
 import com.mclin.sutom.game.play.domain.Attempt.AttemptBuilder;
 import java.util.Arrays;
 import java.util.List;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 @UnitTest
 class GameTest {
 
-  @Test
-  void initialHint() {
-    Game g = game();
+  @Nested
+  class CreateHint {
 
-    List<Letter> hintLetters = Arrays.asList(new Letter('H'), Letter.DOT_UNKNOWN);
-    assertThat(g.hint()).isEqualTo(new Hint(hintLetters));
+    @Test
+    void initialHint() {
+      Game g = game("HI");
+
+      List<Letter> hintLetters = Arrays.asList(new Letter('H'), Letter.DOT_UNKNOWN);
+      assertThat(g.hint()).isEqualTo(new Hint(hintLetters));
+    }
   }
 
-  @Test
-  void guessCorrectWord() {
-    Game g = game();
+  @Nested
+  class GuessWord {
 
-    Attempt expected = new AttemptBuilder().withWellPlaced('H').withWellPlaced('I').build();
-    assertThat(g.guess(new Guess("HI"))).isEqualTo(expected);
+    @Test
+    void correctWord() {
+      Game g = game("HI");
+
+      Attempt expected = new AttemptBuilder().withWellPlaced('H').withWellPlaced('I').build();
+      assertThat(g.guess(new Guess("HI"))).isEqualTo(expected);
+    }
+
+    @Test
+    void unknownLetter() {
+      Game g = game("HI");
+
+      Attempt expected = new AttemptBuilder().withWellPlaced('H').withUnknown('A').build();
+      assertThat(g.guess(new Guess("HA"))).isEqualTo(expected);
+    }
+
+    @Test
+    void wrongPlacedLetter() {
+      Game g = game("HI");
+
+      Attempt expected = new AttemptBuilder().withMisPlaced('I').withMisPlaced('H').build();
+      assertThat(g.guess(new Guess("IH"))).isEqualTo(expected);
+    }
+
+    @Test
+    void multipleWrongPlacedLetter() {
+      Game g = game("HEYLL");
+
+      Attempt expected = new AttemptBuilder()
+        .withWellPlaced('H')
+        .withWellPlaced('E')
+        .withMisPlaced('L')
+        .withWellPlaced('L')
+        .withUnknown('O')
+        .build();
+
+      assertThat(g.guess(new Guess("HELLO"))).isEqualTo(expected);
+    }
   }
 
-  @Test
-  void guessUnknownLetter() {
-    Game g = game();
-
-    Attempt expected = new AttemptBuilder().withWellPlaced('H').withUnknown('A').build();
-    assertThat(g.guess(new Guess("HA"))).isEqualTo(expected);
-  }
-
-  @Test
-  void guessWrongPlacedLetter() {
-    Game g = game();
-
-    Attempt expected = new AttemptBuilder().withMisPlaced('I').withMisPlaced('H').build();
-    assertThat(g.guess(new Guess("IH"))).isEqualTo(expected);
-  }
-
-  private Game game() {
-    return new Game(new SecretWord("HI"));
+  private Game game(String secretWord) {
+    return new Game(new SecretWord(secretWord));
   }
 }

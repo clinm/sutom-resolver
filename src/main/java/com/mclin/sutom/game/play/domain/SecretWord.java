@@ -1,5 +1,7 @@
 package com.mclin.sutom.game.play.domain;
 
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public record SecretWord(String secretWord) {
@@ -15,7 +17,21 @@ public record SecretWord(String secretWord) {
     return character.equals(secretWord.charAt(i));
   }
 
-  public boolean contains(Character at) {
-    return secretWord.contains(at.toString());
+  private LetterStats stats() {
+    var stats = stream().collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+    return new LetterStats(stats);
+  }
+
+  public LetterStats misplacedLettersStats(Guess guess) {
+    var stats = stats();
+
+    for (int i = 0; i < guess.value().length(); i++) {
+      Character current = guess.at(i);
+      if (hasCharacterAtPos(current, i)) {
+        stats.decrease(current);
+      }
+    }
+
+    return stats;
   }
 }
