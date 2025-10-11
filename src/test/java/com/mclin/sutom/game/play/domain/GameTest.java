@@ -19,7 +19,7 @@ class GameTest {
     void initialHint() {
       Game g = game("HI");
 
-      List<Letter> hintLetters = Arrays.asList(new Letter('H'), Letter.DOT_UNKNOWN);
+      List<Letter> hintLetters = Arrays.asList(Letter.wellPlaced('H'), Letter.DOT_UNKNOWN);
       assertThat(g.hint()).isEqualTo(new Hint(hintLetters));
     }
   }
