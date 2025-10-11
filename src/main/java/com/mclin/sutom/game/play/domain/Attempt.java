@@ -8,6 +8,10 @@ public record Attempt(List<Letter> letters) {
     return letters.get(index);
   }
 
+  public boolean win() {
+    return letters.stream().allMatch(Letter::isWellPlaced);
+  }
+
   public static final class AttemptBuilder {
 
     private List<Letter> letters = new ArrayList<>();

@@ -38,6 +38,13 @@ class GameTest {
   class GuessWord {
 
     @Test
+    void newGameIsNotWin() {
+      Game g = game("HI");
+
+      assertThat(g.win()).isFalse();
+    }
+
+    @Test
     void correctWord() {
       Game g = game("HI");
 
@@ -74,6 +81,15 @@ class GameTest {
         .build();
 
       assertThat(g.guess(new Guess("HELLO"))).isEqualTo(expected);
+    }
+
+    @Test
+    void winGame() {
+      Game g = game("HELLO");
+
+      g.guess(new Guess("HELLO"));
+
+      assertThat(g.win()).isTrue();
     }
   }
 

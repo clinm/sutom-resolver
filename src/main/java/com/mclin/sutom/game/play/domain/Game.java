@@ -6,6 +6,8 @@ public class Game {
 
   private Hint hint;
 
+  private boolean win = false;
+
   public Game(SecretWord secretWord) {
     this.secretWord = secretWord;
     hint = secretWord.initialHint();
@@ -17,7 +19,12 @@ public class Game {
 
   public Attempt guess(Guess guess) {
     Attempt attempt = secretWord.guess(guess);
+    win = attempt.win();
     hint = hint.union(attempt);
     return attempt;
+  }
+
+  public boolean win() {
+    return win;
   }
 }
