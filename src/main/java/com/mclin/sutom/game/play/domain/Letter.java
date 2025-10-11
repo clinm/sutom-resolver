@@ -11,6 +11,10 @@ public record Letter(char value, State state) {
     return state == State.WELL_PLACED;
   }
 
+  public boolean isMisplaced() {
+    return state == State.MISPLACED;
+  }
+
   public static Letter unknown(char value) {
     return new Letter(value, State.UNKNOWN);
   }
