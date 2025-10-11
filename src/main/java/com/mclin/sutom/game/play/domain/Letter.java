@@ -7,6 +7,10 @@ public record Letter(char value, State state) {
     this(value, State.UNKNOWN);
   }
 
+  public boolean isWellPlaced() {
+    return state == State.WELL_PLACED;
+  }
+
   public static Letter unknown(char value) {
     return new Letter(value, State.UNKNOWN);
   }

@@ -16,6 +16,8 @@ public class Game {
   }
 
   public Attempt guess(Guess guess) {
-    return secretWord.guess(guess);
+    Attempt attempt = secretWord.guess(guess);
+    hint = hint.union(attempt);
+    return attempt;
   }
 }

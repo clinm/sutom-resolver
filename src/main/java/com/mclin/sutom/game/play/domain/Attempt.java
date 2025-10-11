@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public record Attempt(List<Letter> letters) {
+  public Letter at(int index) {
+    return letters.get(index);
+  }
+
   public static final class AttemptBuilder {
 
     private List<Letter> letters = new ArrayList<>();

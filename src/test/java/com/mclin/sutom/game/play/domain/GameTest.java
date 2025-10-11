@@ -22,6 +22,16 @@ class GameTest {
       List<Letter> hintLetters = Arrays.asList(Letter.wellPlaced('H'), Letter.DOT_UNKNOWN);
       assertThat(g.hint()).isEqualTo(new Hint(hintLetters));
     }
+
+    @Test
+    void afterOneGuessWithWellPlaced() {
+      Game g = game("BYE");
+
+      g.guess(new Guess("BYR"));
+
+      List<Letter> hintLetters = Arrays.asList(Letter.wellPlaced('B'), Letter.wellPlaced('Y'), Letter.DOT_UNKNOWN);
+      assertThat(g.hint()).isEqualTo(new Hint(hintLetters));
+    }
   }
 
   @Nested
