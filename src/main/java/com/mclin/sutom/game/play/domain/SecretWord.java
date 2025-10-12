@@ -1,12 +1,17 @@
 package com.mclin.sutom.game.play.domain;
 
 import com.mclin.sutom.game.play.domain.Attempt.AttemptBuilder;
+import com.mclin.sutom.shared.error.domain.Assert;
 import java.util.ArrayList;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public record SecretWord(String secretWord) {
+  public SecretWord {
+    Assert.field("secretWord", secretWord).notBlank();
+  }
+
   public Hint initialHint() {
     Letter firstLetter = Letter.wellPlaced(firstLetter());
     var letters = new ArrayList<Letter>();

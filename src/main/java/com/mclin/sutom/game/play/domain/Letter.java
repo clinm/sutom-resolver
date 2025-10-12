@@ -1,7 +1,14 @@
 package com.mclin.sutom.game.play.domain;
 
+import com.mclin.sutom.shared.error.domain.Assert;
+
 public record Letter(char value, State state) {
   public static final Letter DOT_UNKNOWN = new Letter('.');
+
+  public Letter {
+    Assert.notNull("value", value);
+    Assert.notNull("state", state);
+  }
 
   public Letter(char value) {
     this(value, State.UNKNOWN);

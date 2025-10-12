@@ -26,6 +26,10 @@ npm install
 
 <!-- seed4j-needle-localEnvironment -->
 
+```bash
+./mvnw test-compile org.pitest:pitest-maven:mutationCoverage
+```
+
 ## Start up
 
 ```bash

@@ -45,10 +45,24 @@ class GameTest {
     }
 
     @Test
+    void incorretAttemptIsNotWin() {
+      Game g = game("HI");
+
+      g.guess(new Guess("HA"));
+
+      assertThat(g.win()).isFalse();
+    }
+
+    @Test
     void correctWord() {
       Game g = game("HI");
 
-      Attempt expected = new AttemptBuilder().withWellPlaced('H').withWellPlaced('I').build();
+      // @formatter:off
+      Attempt expected = new AttemptBuilder()
+        .withWellPlaced('H')
+        .withWellPlaced('I')
+        .build();
+      // @formatter:on
       assertThat(g.guess(new Guess("HI"))).isEqualTo(expected);
     }
 
@@ -56,7 +70,13 @@ class GameTest {
     void unknownLetter() {
       Game g = game("HI");
 
-      Attempt expected = new AttemptBuilder().withWellPlaced('H').withUnknown('A').build();
+      // @formatter:off
+      Attempt expected = new AttemptBuilder()
+        .withWellPlaced('H')
+        .withUnknown('A')
+        .build();
+      // @formatter:on
+
       assertThat(g.guess(new Guess("HA"))).isEqualTo(expected);
     }
 
@@ -64,23 +84,46 @@ class GameTest {
     void wrongPlacedLetter() {
       Game g = game("HI");
 
-      Attempt expected = new AttemptBuilder().withMisPlaced('I').withMisPlaced('H').build();
+      // @formatter:off
+      Attempt expected = new AttemptBuilder()
+        .withMisPlaced('I')
+        .withMisPlaced('H')
+        .build();
+      // @formatter:on
+
       assertThat(g.guess(new Guess("IH"))).isEqualTo(expected);
     }
 
     @Test
-    void multipleWrongPlacedLetter() {
-      Game g = game("HEYLL");
+    void sameLetterMisplacedAndUnknown() {
+      Game g = game("ACDC");
 
+      // @formatter:off
       Attempt expected = new AttemptBuilder()
-        .withWellPlaced('H')
-        .withWellPlaced('E')
-        .withMisPlaced('L')
-        .withWellPlaced('L')
-        .withUnknown('O')
+        .withWellPlaced('A')
+        .withMisPlaced('D')
+        .withUnknown('E')
+        .withUnknown('D')
         .build();
+      // @formatter:on
 
-      assertThat(g.guess(new Guess("HELLO"))).isEqualTo(expected);
+      assertThat(g.guess(new Guess("ADED"))).isEqualTo(expected);
+    }
+
+    @Test
+    void sameLetterWellPlacedAndUnknown() {
+      Game g = game("ACDC");
+
+      // @formatter:off
+      Attempt expected = new AttemptBuilder()
+        .withWellPlaced('A')
+        .withUnknown('D')
+        .withWellPlaced('D')
+        .withWellPlaced('C')
+        .build();
+      // @formatter:on
+
+      assertThat(g.guess(new Guess("ADDC"))).isEqualTo(expected);
     }
 
     @Test
