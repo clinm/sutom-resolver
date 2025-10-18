@@ -1,5 +1,7 @@
 package com.mclin.sutom.game.play.domain;
 
+import com.mclin.sutom.shared.result.domain.Result;
+
 public class Game {
 
   private SecretWord secretWord;
@@ -17,11 +19,11 @@ public class Game {
     return hint;
   }
 
-  public Attempt guess(Guess guess) {
+  public Result<Attempt, Void> guess(Guess guess) {
     Attempt attempt = secretWord.guess(guess);
     win = attempt.win();
     hint = hint.union(attempt);
-    return attempt;
+    return Result.success(attempt);
   }
 
   public boolean win() {

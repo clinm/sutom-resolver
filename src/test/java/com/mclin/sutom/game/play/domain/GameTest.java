@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.mclin.sutom.UnitTest;
 import com.mclin.sutom.game.play.domain.Attempt.AttemptBuilder;
+import com.mclin.sutom.shared.result.domain.Result;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.Nested;
@@ -63,7 +64,9 @@ class GameTest {
         .withWellPlaced('I')
         .build();
       // @formatter:on
-      assertThat(g.guess(new Guess("HI"))).isEqualTo(expected);
+      Result<Attempt, Void> result = g.guess(new Guess("HI"));
+
+      assertThat(result.getValue()).contains(expected);
     }
 
     @Test
@@ -77,7 +80,8 @@ class GameTest {
         .build();
       // @formatter:on
 
-      assertThat(g.guess(new Guess("HA"))).isEqualTo(expected);
+      Result<Attempt, Void> result = g.guess(new Guess("HA"));
+      assertThat(result.getValue()).contains(expected);
     }
 
     @Test
@@ -91,7 +95,8 @@ class GameTest {
         .build();
       // @formatter:on
 
-      assertThat(g.guess(new Guess("IH"))).isEqualTo(expected);
+      Result<Attempt, Void> result = g.guess(new Guess("IH"));
+      assertThat(result.getValue()).contains(expected);
     }
 
     @Test
@@ -107,7 +112,8 @@ class GameTest {
         .build();
       // @formatter:on
 
-      assertThat(g.guess(new Guess("ADED"))).isEqualTo(expected);
+      Result<Attempt, Void> result = g.guess(new Guess("ADED"));
+      assertThat(result.getValue()).contains(expected);
     }
 
     @Test
@@ -123,7 +129,8 @@ class GameTest {
         .build();
       // @formatter:on
 
-      assertThat(g.guess(new Guess("ADDC"))).isEqualTo(expected);
+      Result<Attempt, Void> result = g.guess(new Guess("ADDC"));
+      assertThat(result.getValue()).contains(expected);
     }
 
     @Test
