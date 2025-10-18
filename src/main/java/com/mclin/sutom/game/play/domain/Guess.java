@@ -4,4 +4,8 @@ public record Guess(String value) {
   public Character at(int i) {
     return value.charAt(i);
   }
+
+  public int length() {
+    return value.length();
+  }
 }

@@ -74,4 +74,8 @@ public record SecretWord(String secretWord) {
 
     return stats;
   }
+
+  public int length() {
+    return secretWord.length();
+  }
 }

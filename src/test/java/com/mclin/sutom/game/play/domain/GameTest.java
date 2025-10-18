@@ -4,6 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.mclin.sutom.UnitTest;
 import com.mclin.sutom.game.play.domain.Attempt.AttemptBuilder;
+import com.mclin.sutom.game.play.domain.error.GameError;
+import com.mclin.sutom.game.play.domain.error.NotSameLengthError;
 import com.mclin.sutom.shared.result.domain.Result;
 import java.util.Arrays;
 import java.util.List;
@@ -64,7 +66,7 @@ class GameTest {
         .withWellPlaced('I')
         .build();
       // @formatter:on
-      Result<Attempt, Void> result = g.guess(new Guess("HI"));
+      Result<Attempt, GameError> result = g.guess(new Guess("HI"));
 
       assertThat(result.getValue()).contains(expected);
     }
@@ -80,7 +82,7 @@ class GameTest {
         .build();
       // @formatter:on
 
-      Result<Attempt, Void> result = g.guess(new Guess("HA"));
+      Result<Attempt, GameError> result = g.guess(new Guess("HA"));
       assertThat(result.getValue()).contains(expected);
     }
 
@@ -95,7 +97,7 @@ class GameTest {
         .build();
       // @formatter:on
 
-      Result<Attempt, Void> result = g.guess(new Guess("IH"));
+      Result<Attempt, GameError> result = g.guess(new Guess("IH"));
       assertThat(result.getValue()).contains(expected);
     }
 
@@ -112,7 +114,7 @@ class GameTest {
         .build();
       // @formatter:on
 
-      Result<Attempt, Void> result = g.guess(new Guess("ADED"));
+      Result<Attempt, GameError> result = g.guess(new Guess("ADED"));
       assertThat(result.getValue()).contains(expected);
     }
 
@@ -129,7 +131,7 @@ class GameTest {
         .build();
       // @formatter:on
 
-      Result<Attempt, Void> result = g.guess(new Guess("ADDC"));
+      Result<Attempt, GameError> result = g.guess(new Guess("ADDC"));
       assertThat(result.getValue()).contains(expected);
     }
 
@@ -140,6 +142,20 @@ class GameTest {
       g.guess(new Guess("HELLO"));
 
       assertThat(g.win()).isTrue();
+    }
+  }
+
+  @Nested
+  class Error {
+
+    @Test
+    void notSameLength() {
+      Game g = game("HELLO");
+
+      Result<Attempt, GameError> result = g.guess(new Guess("HELLOS"));
+
+      List<GameError> errors = List.of(new NotSameLengthError(5, 6));
+      assertThat(result.getErrors()).contains(errors);
     }
   }
 
