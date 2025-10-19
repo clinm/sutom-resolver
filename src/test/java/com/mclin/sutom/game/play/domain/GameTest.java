@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.mclin.sutom.UnitTest;
 import com.mclin.sutom.game.play.domain.Attempt.AttemptBuilder;
 import com.mclin.sutom.game.play.domain.error.GameError;
+import com.mclin.sutom.game.play.domain.error.NotInDictionaryError;
 import com.mclin.sutom.game.play.domain.error.NotSameLengthError;
 import com.mclin.sutom.shared.result.domain.Result;
 import java.util.Arrays;
@@ -15,9 +16,11 @@ import org.junit.jupiter.api.Test;
 @UnitTest
 class GameTest {
 
-  Game game;
+  private Game game;
 
-  Result<Attempt, GameError> result;
+  private Result<Attempt, GameError> result;
+
+  private FakeDictionnaryRepository dictionnary = new FakeDictionnaryRepository();
 
   @Nested
   class CreateHint {
@@ -33,6 +36,7 @@ class GameTest {
     @Test
     void afterOneGuessWithWellPlaced() {
       givenGame("BYE");
+      givenKnownWord("BYR");
 
       whenGuess("BYR");
 
@@ -58,6 +62,7 @@ class GameTest {
     @Test
     void incorrectAttemptIsNotWin() {
       givenGame("HI");
+      givenKnownWord("HA");
 
       whenGuess("HA");
 
@@ -67,6 +72,7 @@ class GameTest {
     @Test
     void correctWord() {
       givenGame("HI");
+      givenKnownWord("HI");
 
       // @formatter:off
       Attempt expected = new AttemptBuilder()
@@ -83,6 +89,7 @@ class GameTest {
     @Test
     void unknownLetter() {
       givenGame("HI");
+      givenKnownWord("HA");
 
       // @formatter:off
       Attempt expected = new AttemptBuilder()
@@ -99,6 +106,7 @@ class GameTest {
     @Test
     void wrongPlacedLetter() {
       givenGame("HI");
+      givenKnownWord("IH");
 
       // @formatter:off
       Attempt expected = new AttemptBuilder()
@@ -115,6 +123,7 @@ class GameTest {
     @Test
     void sameLetterMisplacedAndUnknown() {
       givenGame("ACDC");
+      givenKnownWord("ADED");
 
       // @formatter:off
       Attempt expected = new AttemptBuilder()
@@ -133,6 +142,7 @@ class GameTest {
     @Test
     void sameLetterWellPlacedAndUnknown() {
       givenGame("ACDC");
+      givenKnownWord("ADDC");
 
       // @formatter:off
       Attempt expected = new AttemptBuilder()
@@ -151,6 +161,7 @@ class GameTest {
     @Test
     void winGame() {
       givenGame("HELLO");
+      givenKnownWord("HELLO");
 
       whenGuess("HELLO");
 
@@ -164,19 +175,32 @@ class GameTest {
     @Test
     void notSameLength() {
       givenGame("HELLO");
+      givenKnownWord("HELLOS");
 
       whenGuess("HELLOS");
 
       expectError(new NotSameLengthError(5, 6));
     }
+
+    @Test
+    void guessNotInDictionary() {
+      givenGame("HELLO");
+
+      whenGuess("HALLO");
+      expectError(new NotInDictionaryError("HALLO"));
+    }
   }
 
   private void givenGame(String secretWord) {
-    game = new Game(new SecretWord(secretWord));
+    game = new Game(dictionnary, new SecretWord(secretWord));
   }
 
   private void whenGuess(String guess) {
     result = game.guess(new Guess(guess));
+  }
+
+  private void givenKnownWord(String word) {
+    dictionnary.knows(word);
   }
 
   private void expectAttempt(Attempt expected) {

@@ -24,6 +24,10 @@ public final class Result<T, E> {
     return new Result<>(null, errors);
   }
 
+  public static <T, E> Result<T, E> failure(E failure) {
+    return failure(List.of(failure));
+  }
+
   public boolean isSuccess() {
     return errors == null;
   }

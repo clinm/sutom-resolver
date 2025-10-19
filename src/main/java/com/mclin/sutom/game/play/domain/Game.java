@@ -1,12 +1,14 @@
 package com.mclin.sutom.game.play.domain;
 
 import com.mclin.sutom.game.play.domain.error.GameError;
+import com.mclin.sutom.game.play.domain.error.NotInDictionaryError;
 import com.mclin.sutom.game.play.domain.error.NotSameLengthError;
 import com.mclin.sutom.shared.result.domain.Result;
-import java.util.List;
 import java.util.Optional;
 
 public class Game {
+
+  private DictionnaryRepository dictionnary;
 
   private SecretWord secretWord;
 
@@ -14,7 +16,8 @@ public class Game {
 
   private boolean win = false;
 
-  public Game(SecretWord secretWord) {
+  public Game(DictionnaryRepository dictionnary, SecretWord secretWord) {
+    this.dictionnary = dictionnary;
     this.secretWord = secretWord;
     hint = secretWord.initialHint();
   }
@@ -38,12 +41,15 @@ public class Game {
     int expected = secretWord.length();
     int actual = guess.length();
 
-    if (expected == actual) {
+    if (expected != actual) {
+      return Optional.of(Result.failure(new NotSameLengthError(expected, actual)));
+    }
+
+    if (dictionnary.contains(guess.value())) {
       return Optional.empty();
     }
 
-    List<GameError> errors = List.of(new NotSameLengthError(expected, actual));
-    return Optional.of(Result.failure(errors));
+    return Optional.of(Result.failure(new NotInDictionaryError(guess.value())));
   }
 
   public boolean win() {

@@ -1,6 +1,7 @@
 package com.mclin.sutom.game.play.primary.cli;
 
 import com.mclin.sutom.game.play.domain.Attempt;
+import com.mclin.sutom.game.play.domain.DictionnaryRepository;
 import com.mclin.sutom.game.play.domain.Game;
 import com.mclin.sutom.game.play.domain.Guess;
 import com.mclin.sutom.game.play.domain.SecretWord;
@@ -13,7 +14,8 @@ final class CLI {
   private CLI() {}
 
   public static void main(String[] args) {
-    Game g = new Game(new SecretWord("SECOURS"));
+    DictionnaryRepository dictionnary = word -> true;
+    Game g = new Game(dictionnary, new SecretWord("SECOURS"));
     try (Scanner scanner = new Scanner(System.in)) {
       do {
         System.out.println(new CLIHint(g.hint()));

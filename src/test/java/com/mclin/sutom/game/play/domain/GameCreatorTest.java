@@ -20,7 +20,7 @@ class GameCreatorTest {
   @Test
   void create() {
     when(secretWordRepository.get()).thenReturn(new SecretWord("HI"));
-    GameCreator gc = new GameCreator(secretWordRepository);
+    GameCreator gc = new GameCreator(secretWordRepository, new FakeDictionnaryRepository());
 
     Game game = gc.create();
 
