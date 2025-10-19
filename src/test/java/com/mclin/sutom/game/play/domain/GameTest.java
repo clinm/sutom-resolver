@@ -15,25 +15,33 @@ import org.junit.jupiter.api.Test;
 @UnitTest
 class GameTest {
 
+  Game game;
+
+  Result<Attempt, GameError> result;
+
   @Nested
   class CreateHint {
 
     @Test
     void initialHint() {
-      Game g = game("HI");
+      givenGame("HI");
 
-      List<Letter> hintLetters = Arrays.asList(Letter.wellPlaced('H'), Letter.DOT_UNKNOWN);
-      assertThat(g.hint()).isEqualTo(new Hint(hintLetters));
+      var hintLetters = Arrays.asList(Letter.wellPlaced('H'), Letter.DOT_UNKNOWN);
+      expectHint(hintLetters);
     }
 
     @Test
     void afterOneGuessWithWellPlaced() {
-      Game g = game("BYE");
+      givenGame("BYE");
 
-      g.guess(new Guess("BYR"));
+      whenGuess("BYR");
 
-      List<Letter> hintLetters = Arrays.asList(Letter.wellPlaced('B'), Letter.wellPlaced('Y'), Letter.DOT_UNKNOWN);
-      assertThat(g.hint()).isEqualTo(new Hint(hintLetters));
+      var hintLetters = Arrays.asList(Letter.wellPlaced('B'), Letter.wellPlaced('Y'), Letter.DOT_UNKNOWN);
+      expectHint(hintLetters);
+    }
+
+    private void expectHint(List<Letter> hintLetters) {
+      assertThat(game.hint()).isEqualTo(new Hint(hintLetters));
     }
   }
 
@@ -42,23 +50,23 @@ class GameTest {
 
     @Test
     void newGameIsNotWin() {
-      Game g = game("HI");
+      givenGame("HI");
 
-      assertThat(g.win()).isFalse();
+      expectWin(false);
     }
 
     @Test
-    void incorretAttemptIsNotWin() {
-      Game g = game("HI");
+    void incorrectAttemptIsNotWin() {
+      givenGame("HI");
 
-      g.guess(new Guess("HA"));
+      whenGuess("HA");
 
-      assertThat(g.win()).isFalse();
+      expectWin(false);
     }
 
     @Test
     void correctWord() {
-      Game g = game("HI");
+      givenGame("HI");
 
       // @formatter:off
       Attempt expected = new AttemptBuilder()
@@ -66,14 +74,15 @@ class GameTest {
         .withWellPlaced('I')
         .build();
       // @formatter:on
-      Result<Attempt, GameError> result = g.guess(new Guess("HI"));
 
-      assertThat(result.getValue()).contains(expected);
+      whenGuess("HI");
+
+      expectAttempt(expected);
     }
 
     @Test
     void unknownLetter() {
-      Game g = game("HI");
+      givenGame("HI");
 
       // @formatter:off
       Attempt expected = new AttemptBuilder()
@@ -82,13 +91,14 @@ class GameTest {
         .build();
       // @formatter:on
 
-      Result<Attempt, GameError> result = g.guess(new Guess("HA"));
-      assertThat(result.getValue()).contains(expected);
+      whenGuess("HA");
+
+      expectAttempt(expected);
     }
 
     @Test
     void wrongPlacedLetter() {
-      Game g = game("HI");
+      givenGame("HI");
 
       // @formatter:off
       Attempt expected = new AttemptBuilder()
@@ -97,13 +107,14 @@ class GameTest {
         .build();
       // @formatter:on
 
-      Result<Attempt, GameError> result = g.guess(new Guess("IH"));
-      assertThat(result.getValue()).contains(expected);
+      whenGuess("IH");
+
+      expectAttempt(expected);
     }
 
     @Test
     void sameLetterMisplacedAndUnknown() {
-      Game g = game("ACDC");
+      givenGame("ACDC");
 
       // @formatter:off
       Attempt expected = new AttemptBuilder()
@@ -114,13 +125,14 @@ class GameTest {
         .build();
       // @formatter:on
 
-      Result<Attempt, GameError> result = g.guess(new Guess("ADED"));
-      assertThat(result.getValue()).contains(expected);
+      whenGuess("ADED");
+
+      expectAttempt(expected);
     }
 
     @Test
     void sameLetterWellPlacedAndUnknown() {
-      Game g = game("ACDC");
+      givenGame("ACDC");
 
       // @formatter:off
       Attempt expected = new AttemptBuilder()
@@ -131,17 +143,18 @@ class GameTest {
         .build();
       // @formatter:on
 
-      Result<Attempt, GameError> result = g.guess(new Guess("ADDC"));
-      assertThat(result.getValue()).contains(expected);
+      whenGuess("ADDC");
+
+      expectAttempt(expected);
     }
 
     @Test
     void winGame() {
-      Game g = game("HELLO");
+      givenGame("HELLO");
 
-      g.guess(new Guess("HELLO"));
+      whenGuess("HELLO");
 
-      assertThat(g.win()).isTrue();
+      expectWin(true);
     }
   }
 
@@ -150,16 +163,31 @@ class GameTest {
 
     @Test
     void notSameLength() {
-      Game g = game("HELLO");
+      givenGame("HELLO");
 
-      Result<Attempt, GameError> result = g.guess(new Guess("HELLOS"));
+      whenGuess("HELLOS");
 
-      List<GameError> errors = List.of(new NotSameLengthError(5, 6));
-      assertThat(result.getErrors()).contains(errors);
+      expectError(new NotSameLengthError(5, 6));
     }
   }
 
-  private Game game(String secretWord) {
-    return new Game(new SecretWord(secretWord));
+  private void givenGame(String secretWord) {
+    game = new Game(new SecretWord(secretWord));
+  }
+
+  private void whenGuess(String guess) {
+    result = game.guess(new Guess(guess));
+  }
+
+  private void expectAttempt(Attempt expected) {
+    assertThat(result.getValue()).contains(expected);
+  }
+
+  private void expectWin(boolean winState) {
+    assertThat(game.win()).isEqualTo(winState);
+  }
+
+  private void expectError(GameError error) {
+    assertThat(result.getErrors()).contains(List.of(error));
   }
 }
