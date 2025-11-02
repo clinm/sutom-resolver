@@ -14,8 +14,7 @@ public class Game {
 
   private Hint hint;
 
-  // TODO inclose into a Attempts object
-  private State win = State.IN_PROGRESS;
+  private Attempts attempts = Attempts.EMPTY;
 
   public Game(DictionnaryRepository dictionnary, SecretWord secretWord) {
     this.dictionnary = dictionnary;
@@ -33,8 +32,8 @@ public class Game {
 
   private Result<Attempt, GameError> attempt(Guess guess) {
     Attempt attempt = secretWord.guess(guess);
-    win = attempt.win();
     hint = hint.union(attempt);
+    attempts = attempts.add(attempt);
     return Result.success(attempt);
   }
 
@@ -54,6 +53,6 @@ public class Game {
   }
 
   public State state() {
-    return win;
+    return attempts.state();
   }
 }

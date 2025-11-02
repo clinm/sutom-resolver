@@ -24,8 +24,7 @@ final class CLI {
         Result<Attempt, GameError> result = g.guess(new Guess(guessInput));
         Attempt attempt = result.getValue().get();
         System.out.println(new CLIAttempt(attempt));
-        // TODO inclose into method
-      } while (g.state().equals(State.IN_PROGRESS));
+      } while (g.state().keepPlaying());
     }
   }
 }
