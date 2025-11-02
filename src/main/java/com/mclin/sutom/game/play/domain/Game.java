@@ -1,5 +1,6 @@
 package com.mclin.sutom.game.play.domain;
 
+import com.mclin.sutom.game.play.domain.error.AttemptLimitReachedException;
 import com.mclin.sutom.game.play.domain.error.GameError;
 import com.mclin.sutom.game.play.domain.error.NotInDictionaryError;
 import com.mclin.sutom.game.play.domain.error.NotSameLengthError;
@@ -26,14 +27,18 @@ public class Game {
     return hint;
   }
 
-  public Result<Attempt, GameError> guess(Guess guess) {
-    return validate(guess).orElseGet(() -> attempt(guess));
+  public Result<Attempt, GameError> guess(Guess guess) throws AttemptLimitReachedException {
+    var validated = validate(guess);
+    if (validated.isPresent()) {
+      return validated.get();
+    }
+    return attempt(guess);
   }
 
-  private Result<Attempt, GameError> attempt(Guess guess) {
+  private Result<Attempt, GameError> attempt(Guess guess) throws AttemptLimitReachedException {
     Attempt attempt = secretWord.guess(guess);
-    hint = hint.union(attempt);
     attempts = attempts.add(attempt);
+    hint = hint.union(attempt);
     return Result.success(attempt);
   }
 

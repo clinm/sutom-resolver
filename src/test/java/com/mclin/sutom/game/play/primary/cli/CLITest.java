@@ -3,6 +3,7 @@ package com.mclin.sutom.game.play.primary.cli;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.mclin.sutom.UnitTest;
+import com.mclin.sutom.game.play.domain.error.AttemptLimitReachedException;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import org.junit.jupiter.api.Test;
@@ -11,7 +12,7 @@ import org.junit.jupiter.api.Test;
 class CLITest {
 
   @Test
-  void fullGame() {
+  void fullGame() throws AttemptLimitReachedException {
     String input = "SOURIRE" + System.lineSeparator() + "SECOURS";
     System.setIn(new java.io.ByteArrayInputStream(input.getBytes()));
 

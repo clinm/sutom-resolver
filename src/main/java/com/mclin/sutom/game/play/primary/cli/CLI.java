@@ -5,7 +5,7 @@ import com.mclin.sutom.game.play.domain.DictionnaryRepository;
 import com.mclin.sutom.game.play.domain.Game;
 import com.mclin.sutom.game.play.domain.Guess;
 import com.mclin.sutom.game.play.domain.SecretWord;
-import com.mclin.sutom.game.play.domain.State;
+import com.mclin.sutom.game.play.domain.error.AttemptLimitReachedException;
 import com.mclin.sutom.game.play.domain.error.GameError;
 import com.mclin.sutom.shared.result.domain.Result;
 import java.util.Scanner;
@@ -14,7 +14,7 @@ final class CLI {
 
   private CLI() {}
 
-  public static void main(String[] args) {
+  public static void main(String[] args) throws AttemptLimitReachedException {
     DictionnaryRepository dictionnary = word -> true;
     Game g = new Game(dictionnary, new SecretWord("SECOURS"));
     try (Scanner scanner = new Scanner(System.in)) {

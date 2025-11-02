@@ -1,9 +1,12 @@
 package com.mclin.sutom.game.play.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import com.mclin.sutom.UnitTest;
 import com.mclin.sutom.game.play.domain.Attempt.AttemptBuilder;
+import com.mclin.sutom.game.play.domain.error.AttemptLimitReachedException;
 import com.mclin.sutom.game.play.domain.error.GameError;
 import com.mclin.sutom.game.play.domain.error.NotInDictionaryError;
 import com.mclin.sutom.game.play.domain.error.NotSameLengthError;
@@ -167,6 +170,16 @@ class GameTest {
 
       expectWin();
     }
+
+    @Test
+    void loseGame() {
+      givenGame("HELLO");
+      givenKnownWord("HALLO");
+
+      whenLoseWithWord("HALLO");
+
+      expectLose();
+    }
   }
 
   @Nested
@@ -189,6 +202,20 @@ class GameTest {
       whenGuess("HALLO");
       expectError(new NotInDictionaryError("HALLO"));
     }
+
+    @Test
+    void guessAfterLose() {
+      givenGame("HELLO");
+      givenKnownWord("HALLO");
+
+      whenLoseWithWord("HALLO");
+
+      expectThrowsOnNewGuess("HALLO");
+    }
+
+    private AttemptLimitReachedException expectThrowsOnNewGuess(String guess) {
+      return assertThrows(AttemptLimitReachedException.class, () -> game.guess(new Guess(guess)));
+    }
   }
 
   private void givenGame(String secretWord) {
@@ -196,7 +223,21 @@ class GameTest {
   }
 
   private void whenGuess(String guess) {
-    result = game.guess(new Guess(guess));
+    try {
+      result = game.guess(new Guess(guess));
+    } catch (AttemptLimitReachedException e) {
+      fail("Should not throw");
+      e.printStackTrace();
+    }
+  }
+
+  private void whenLoseWithWord(String guess) {
+    whenGuess(guess);
+    whenGuess(guess);
+    whenGuess(guess);
+    whenGuess(guess);
+    whenGuess(guess);
+    whenGuess(guess);
   }
 
   private void givenKnownWord(String word) {
