@@ -8,8 +8,8 @@ public record Attempt(List<Letter> letters) {
     return letters.get(index);
   }
 
-  public boolean win() {
-    return letters.stream().allMatch(Letter::isWellPlaced);
+  public State win() {
+    return letters.stream().allMatch(Letter::isWellPlaced) ? State.WIN : State.IN_PROGRESS;
   }
 
   public static final class AttemptBuilder {

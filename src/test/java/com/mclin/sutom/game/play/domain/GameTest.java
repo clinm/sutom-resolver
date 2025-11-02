@@ -56,7 +56,7 @@ class GameTest {
     void newGameIsNotWin() {
       givenGame("HI");
 
-      expectWin(false);
+      expectInProgress();
     }
 
     @Test
@@ -66,7 +66,7 @@ class GameTest {
 
       whenGuess("HA");
 
-      expectWin(false);
+      expectInProgress();
     }
 
     @Test
@@ -165,7 +165,7 @@ class GameTest {
 
       whenGuess("HELLO");
 
-      expectWin(true);
+      expectWin();
     }
   }
 
@@ -207,8 +207,16 @@ class GameTest {
     assertThat(result.getValue()).contains(expected);
   }
 
-  private void expectWin(boolean winState) {
-    assertThat(game.win()).isEqualTo(winState);
+  private void expectWin() {
+    assertThat(game.state()).isEqualTo(State.WIN);
+  }
+
+  private void expectInProgress() {
+    assertThat(game.state()).isEqualTo(State.IN_PROGRESS);
+  }
+
+  public void expectLose() {
+    assertThat(game.state()).isEqualTo(State.LOSE);
   }
 
   private void expectError(GameError error) {

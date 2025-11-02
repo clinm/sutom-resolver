@@ -14,7 +14,8 @@ public class Game {
 
   private Hint hint;
 
-  private boolean win = false;
+  // TODO inclose into a Attempts object
+  private State win = State.IN_PROGRESS;
 
   public Game(DictionnaryRepository dictionnary, SecretWord secretWord) {
     this.dictionnary = dictionnary;
@@ -52,7 +53,7 @@ public class Game {
     return Optional.of(Result.failure(new NotInDictionaryError(guess.value())));
   }
 
-  public boolean win() {
+  public State state() {
     return win;
   }
 }

@@ -2,7 +2,7 @@ package com.mclin.sutom.game.play.domain;
 
 import com.mclin.sutom.shared.error.domain.Assert;
 
-public record Letter(char value, State state) {
+public record Letter(char value, LetterState state) {
   public static final Letter DOT_UNKNOWN = new Letter('.');
 
   public Letter {
@@ -11,26 +11,26 @@ public record Letter(char value, State state) {
   }
 
   public Letter(char value) {
-    this(value, State.UNKNOWN);
+    this(value, LetterState.UNKNOWN);
   }
 
   public boolean isWellPlaced() {
-    return state == State.WELL_PLACED;
+    return state == LetterState.WELL_PLACED;
   }
 
   public boolean isMisplaced() {
-    return state == State.MISPLACED;
+    return state == LetterState.MISPLACED;
   }
 
   public static Letter unknown(char value) {
-    return new Letter(value, State.UNKNOWN);
+    return new Letter(value, LetterState.UNKNOWN);
   }
 
   public static Letter wellPlaced(char value) {
-    return new Letter(value, State.WELL_PLACED);
+    return new Letter(value, LetterState.WELL_PLACED);
   }
 
   public static Letter misplaced(char value) {
-    return new Letter(value, State.MISPLACED);
+    return new Letter(value, LetterState.MISPLACED);
   }
 }
