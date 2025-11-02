@@ -1,8 +1,8 @@
 package com.mclin.sutom.game.play.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.fail;
 
 import com.mclin.sutom.UnitTest;
 import com.mclin.sutom.game.play.domain.Attempt.AttemptBuilder;
@@ -223,12 +223,9 @@ class GameTest {
   }
 
   private void whenGuess(String guess) {
-    try {
+    assertDoesNotThrow(() -> {
       result = game.guess(new Guess(guess));
-    } catch (AttemptLimitReachedException e) {
-      fail("Should not throw");
-      e.printStackTrace();
-    }
+    });
   }
 
   private void whenLoseWithWord(String guess) {
