@@ -1,7 +1,9 @@
 package com.mclin.sutom.game.play.domain;
 
+import com.mclin.sutom.game.play.domain.solver.Word;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public record Attempt(List<Letter> letters) {
   public Letter at(int index) {
@@ -10,6 +12,10 @@ public record Attempt(List<Letter> letters) {
 
   public State win() {
     return letters.stream().allMatch(Letter::isWellPlaced) ? State.WIN : State.IN_PROGRESS;
+  }
+
+  public Word word() {
+    return new Word(letters.stream().map(Letter::value).map(String::valueOf).collect(Collectors.joining()));
   }
 
   public static final class AttemptBuilder {

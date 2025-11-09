@@ -23,10 +23,6 @@ public class Game {
     hint = secretWord.initialHint();
   }
 
-  public Hint hint() {
-    return hint;
-  }
-
   public Result<Attempt, GameError> guess(Guess guess) throws AttemptLimitReachedException {
     var validated = validate(guess);
     if (validated.isPresent()) {
@@ -55,6 +51,14 @@ public class Game {
     }
 
     return Optional.of(Result.failure(new NotInDictionaryError(guess.value())));
+  }
+
+  public Hint hint() {
+    return hint;
+  }
+
+  public Attempts attempts() {
+    return attempts;
   }
 
   public State state() {

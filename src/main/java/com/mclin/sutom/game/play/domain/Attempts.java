@@ -1,6 +1,7 @@
 package com.mclin.sutom.game.play.domain;
 
 import com.mclin.sutom.game.play.domain.error.AttemptLimitReachedException;
+import com.mclin.sutom.game.play.domain.solver.Word;
 import com.mclin.sutom.shared.error.domain.Assert;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +13,10 @@ public record Attempts(List<Attempt> attempts) {
 
   public Attempts {
     Assert.notNull("attempts", attempts);
+  }
+
+  public List<Word> words() {
+    return attempts.stream().map(Attempt::word).toList();
   }
 
   public Attempts add(Attempt attempt) throws AttemptLimitReachedException {

@@ -10,6 +10,7 @@ import com.mclin.sutom.game.play.domain.error.AttemptLimitReachedException;
 import com.mclin.sutom.game.play.domain.error.GameError;
 import com.mclin.sutom.game.play.domain.error.NotInDictionaryError;
 import com.mclin.sutom.game.play.domain.error.NotSameLengthError;
+import com.mclin.sutom.game.play.domain.solver.Word;
 import com.mclin.sutom.shared.result.domain.Result;
 import java.util.Arrays;
 import java.util.List;
@@ -179,6 +180,18 @@ class GameTest {
       whenLoseWithWord("HALLO");
 
       expectLose();
+    }
+
+    @Test
+    void givesAllAttempts() {
+      givenGame("HELLO");
+      givenKnownWord("HALLO");
+
+      whenGuess("HALLO");
+      whenGuess("HALLO");
+
+      List<Word> words = game.attempts().words();
+      assertThat(words).containsExactly(new Word("HALLO"), new Word("HALLO"));
     }
   }
 
