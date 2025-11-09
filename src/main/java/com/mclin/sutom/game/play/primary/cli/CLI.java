@@ -8,6 +8,7 @@ import com.mclin.sutom.game.play.domain.SecretWord;
 import com.mclin.sutom.game.play.domain.error.AttemptLimitReachedException;
 import com.mclin.sutom.game.play.domain.error.GameError;
 import com.mclin.sutom.game.play.domain.solver.Word;
+import com.mclin.sutom.shared.generation.domain.ExcludeFromGeneratedCodeCoverage;
 import com.mclin.sutom.shared.result.domain.Result;
 import java.util.List;
 import java.util.Scanner;
@@ -30,14 +31,15 @@ final class CLI {
     }
   }
 
-  private static class YesDictionnaryRepository implements DictionnaryRepository {
+  private static final class YesDictionnaryRepository implements DictionnaryRepository {
 
     @Override
-    public boolean contains(String word) {
+    public boolean contains(Word word) {
       return true;
     }
 
     @Override
+    @ExcludeFromGeneratedCodeCoverage(reason = "Not used in CLI")
     public List<Word> wordsStartingWith(char letter) {
       return List.of();
     }

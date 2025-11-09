@@ -46,7 +46,7 @@ public class Game {
       return Optional.of(Result.failure(new NotSameLengthError(expected, actual)));
     }
 
-    if (dictionnary.contains(guess.value())) {
+    if (dictionnary.contains(guess.word())) {
       return Optional.empty();
     }
 

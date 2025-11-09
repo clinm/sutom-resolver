@@ -53,8 +53,8 @@ class BruteForceSolverTest {
     expectSuggestionToBeEmpty();
   }
 
-  private Game givenGame() {
-    return game = new Game(dictionnary, new SecretWord("HELLO"));
+  private void givenGame() {
+    game = new Game(dictionnary, new SecretWord("HELLO"));
   }
 
   private void givenGuess(String guess) {

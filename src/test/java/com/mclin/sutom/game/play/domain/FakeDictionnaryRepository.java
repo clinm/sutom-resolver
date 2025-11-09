@@ -22,9 +22,8 @@ public class FakeDictionnaryRepository implements DictionnaryRepository {
   }
 
   @Override
-  // TODO move to word
-  public boolean contains(String word) {
-    return wordsStartingWith.getOrDefault(word.charAt(0), new ArrayList<Word>()).contains(new Word(word));
+  public boolean contains(Word word) {
+    return wordsStartingWith.getOrDefault(word.value().charAt(0), new ArrayList<Word>()).contains(word);
   }
 
   @Override
