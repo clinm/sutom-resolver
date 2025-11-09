@@ -3,20 +3,18 @@ package com.mclin.sutom.game.play.domain;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import com.mclin.sutom.game.play.domain.solver.Word;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 public class FakeDictionnaryRepository implements DictionnaryRepository {
-
-  private String expectedWord;
 
   private Map<Character, List<Word>> wordsStartingWith = new HashMap<>();
 
   public void knows(String word) {
-    expectedWord = word;
+    wordsStartingWith.put(word.charAt(0), List.of(new Word(word)));
   }
 
   public void knowsWordsStartingWith(char letter, Word... words) {
@@ -24,8 +22,9 @@ public class FakeDictionnaryRepository implements DictionnaryRepository {
   }
 
   @Override
+  // TODO move to word
   public boolean contains(String word) {
-    return Objects.equals(expectedWord, word);
+    return wordsStartingWith.getOrDefault(word.charAt(0), new ArrayList<Word>()).contains(new Word(word));
   }
 
   @Override

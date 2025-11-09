@@ -2,7 +2,9 @@ package com.mclin.sutom.game.play.domain.solver;
 
 import com.mclin.sutom.game.play.domain.DictionnaryRepository;
 import com.mclin.sutom.game.play.domain.Game;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 public class BruteForceSolver implements Solver {
 
@@ -16,6 +18,12 @@ public class BruteForceSolver implements Solver {
   public Optional<Word> suggestWord(Game game) {
     char firstLetter = game.hint().letters().getFirst().value();
 
-    return dictionnary.wordsStartingWith(firstLetter).stream().findFirst();
+    Set<Word> triedWords = new HashSet<>(game.attempts().words());
+
+    return dictionnary
+      .wordsStartingWith(firstLetter)
+      .stream()
+      .filter(w -> !triedWords.contains(w))
+      .findFirst();
   }
 }
